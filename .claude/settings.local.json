@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(venv/Scripts/python.exe -c \"from app.main import app; from app.config import get_settings; s=get_settings\\(\\); print\\('app OK, model=', s.groq_model\\); print\\('routes:', [r.path for r in app.routes]\\)\")"
+    ]
+  }
+}

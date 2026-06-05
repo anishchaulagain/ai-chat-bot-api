@@ -1,7 +1,7 @@
 """Chat endpoints: full reply, streaming reply, and session reset."""
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from fastapi.responses import StreamingResponse
 from groq import GroqError
 
@@ -64,10 +64,11 @@ async def chat_stream(
     return StreamingResponse(event_generator(), media_type="text/event-stream")
 
 
-@router.delete("/{session_id}", status_code=204)
+@router.delete("/{session_id}", status_code=204, response_class=Response)
 async def reset_session(
     session_id: str,
     store: SessionStore = Depends(get_session_store),
-) -> None:
+) -> Response:
     """Clear a conversation's history."""
     store.clear(session_id)
+    return Response(status_code=204)

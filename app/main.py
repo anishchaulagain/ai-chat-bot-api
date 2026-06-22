@@ -21,10 +21,13 @@ def create_app() -> FastAPI:
         "configurable platform knowledge base.",
     )
 
+    # Browsers reject "*" origins combined with credentials, so only enable
+    # credentials when explicit origins are configured.
+    allow_all = settings.cors_origin_list == ["*"]
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origin_list,
-        allow_credentials=True,
+        allow_credentials=not allow_all,
         allow_methods=["*"],
         allow_headers=["*"],
     )

@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     groq_api_key: str
     groq_model: str = "llama-3.3-70b-versatile"
     groq_temperature: float = 0.6
-    groq_max_tokens: int = 1024
+    groq_max_tokens: int = 300
 
     # --- Conversation memory ---
     # Max number of prior messages (user + assistant) kept per session.

@@ -1,10 +1,10 @@
-"""Orchestrates a chat turn: builds the prompt, calls Groq, tracks history."""
+"""Orchestrates a chat turn: builds the prompt, calls the LLM, tracks history."""
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
 
 from app.config import Settings, get_settings
-from app.core.groq_client import GroqClient
+from app.core.llm_client import LLMClient
 from app.knowledge.platform import build_system_prompt
 from app.services.session_store import SessionStore
 
@@ -12,7 +12,7 @@ from app.services.session_store import SessionStore
 class ChatService:
     def __init__(
         self,
-        client: GroqClient,
+        client: LLMClient,
         store: SessionStore,
         settings: Settings | None = None,
     ) -> None:

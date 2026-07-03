@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, Response
 from fastapi.responses import StreamingResponse
-from groq import GroqError
+from openai import OpenAIError
 
 from app.api.deps import get_chat_service, get_session_store
 from app.config import get_settings
@@ -29,11 +29,11 @@ async def chat(
             temperature=payload.temperature,
             max_tokens=payload.max_tokens,
         )
-    except GroqError as exc:  # upstream LLM failure
+    except OpenAIError as exc:  # upstream LLM failure
         raise HTTPException(status_code=502, detail=f"LLM error: {exc}") from exc
 
     return ChatResponse(
-        session_id=session_id, reply=reply, model=get_settings().groq_model
+        session_id=session_id, reply=reply, model=get_settings().llm_model
     )
 
 
@@ -57,7 +57,7 @@ async def chat_stream(
                 max_tokens=payload.max_tokens,
             ):
                 yield f"data: {token}\n\n"
-        except GroqError as exc:
+        except OpenAIError as exc:
             yield f"data: [error] {exc}\n\n"
         yield "data: [done]\n\n"
 

@@ -38,3 +38,12 @@ class ChatResponse(BaseModel):
 class HealthResponse(BaseModel):
     status: str = "ok"
     model: str
+
+
+class FAQItem(BaseModel):
+    question: str
+    answer: str
+
+
+class FAQResponse(BaseModel):
+    items: list[FAQItem]
